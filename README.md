@@ -27,7 +27,8 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - rp: The on resistance of the memristive device
 - rap: The off resistance of the memristive device
 
-Follow the link for more information. https://arxiv.org/pdf/2210.17410.pdf
+Follow this paper for more information. Md Hasibul Amin, Mohammed Elbtity, and Ramtin Zand. 2022. A python framework for spice circuit simulation of in-memory analog computing circuits. (2022). https://arxiv.org/abs/2210.17410
+
 ## Running the code
 - First go to the directory _data_ and put the input test data, label data, pre-trained weights and biases into the directory. Sample files are provided for a 400 X 120 X 84 X 10 DNN model.
 - Go to the directory _spice_ and put the neuron subcircuit, differential amplifier subcircuit and transistor models into the directory. Sample model files are provided.
