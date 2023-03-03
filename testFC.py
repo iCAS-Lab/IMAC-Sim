@@ -43,16 +43,16 @@ rho = 1.9e-8 #resistivity of metal
 # list of inputs end
 
 # device properties start
-lMTJ=50e-9
-wMTJ=30e-9
-RA=1e-11
-TMR=200
-AreaMTJ=(math.pi)*lMTJ*wMTJ/4
-rp=RA/AreaMTJ
-#rp=5e3
+# lMTJ=50e-9
+# wMTJ=30e-9
+# RA=1e-11
+# TMR=200
+# AreaMTJ=(math.pi)*lMTJ*wMTJ/4
+# rp=RA/AreaMTJ
+rp=5e3
 print(rp)
-rap=(1+(TMR/100.0))*rp
-#rap=15e3
+# rap=(1+(TMR/100.0))*rp
+rap=15e3
 print(rap)
 # device properties end
 
