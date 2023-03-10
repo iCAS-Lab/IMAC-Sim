@@ -121,29 +121,29 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
                 else:
                     f.write("Rin%d_%d in%d_%d in%d_%d %f\n"% (i+1,j+1,i+1,j,i+1,j+1,parasitic_res))
 
-
+		
     '''
-	f.write("\n\n**********Parasitic Capacitances for Input Lines****************\n\n")
-  	for i in range((layer1+2)/2):
-		if (i==0):
-			parasitic_cap = 0.5*(1.15*(metal/H)+2.8*(pow((T/H),0.222)));
-			for j in range(layer1+1):
-        			if (i!=j):
-					Wij = W*abs(i-j)
-					parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/Wij),1.34))
+    f.write("\n\n**********Parasitic Capacitances for Input Lines****************\n\n")
+    for i in range((layer1+2)/2):
+        if (i==0):
+	    parasitic_cap = 0.5*(1.15*(metal/H)+2.8*(pow((T/H),0.222)));
+	    for j in range(layer1+1):
+	        if (i!=j):
+		    Wij = W*abs(i-j)
+		    parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/Wij),1.34))
 		else:
-			parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/(W*i)),1.34)) - (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/(W*(layer1-i+1))),1.34))
+		    parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/(W*i)),1.34)) - (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/(W*(layer1-i+1))),1.34))
 		#f.write("R%d in%d in0%d 1k\n"% (i+1,i+1,i+1))
 		parasitic_cap_final = eps*parasitic_cap*W*1e15
 		for j in range(layer2):
-			f.write("C%d_%d in%d_%d 0 %ff\n"% (i+1,j+1,i+1,j+1,parasitic_cap_final))
-			if ((layer1+1)%2==0 or i!=(layer1)/2):
-				if (i==0):
-					#f.write("R%d vdd vdd0 1k\n"% (layer1+1-i))
-					f.write("Cbias%d vd%d 0 %ff\n"% (j+1,j+1,parasitic_cap_final))
-				else:
-					#f.write("R%d in%d in0%d 1k\n"% (layer1+1-i,layer1+1-i,layer1+1-i))
-					f.write("C%d_%d in%d_%d 0 %ff\n"% (layer1+1-i,j+1,layer1+1-i,j+1,parasitic_cap_final))
+		    f.write("C%d_%d in%d_%d 0 %ff\n"% (i+1,j+1,i+1,j+1,parasitic_cap_final))
+		    if ((layer1+1)%2==0 or i!=(layer1)/2):
+		        if (i==0):
+			    #f.write("R%d vdd vdd0 1k\n"% (layer1+1-i))
+			    f.write("Cbias%d vd%d 0 %ff\n"% (j+1,j+1,parasitic_cap_final))
+			else:
+			    #f.write("R%d in%d in0%d 1k\n"% (layer1+1-i,layer1+1-i,layer1+1-i))
+			    f.write("C%d_%d in%d_%d 0 %ff\n"% (layer1+1-i,j+1,layer1+1-i,j+1,parasitic_cap_final))
     '''
 
     f.write("\n\n**********Parasitic Resistances for sp1 and sn1 Lines****************\n\n")
@@ -168,26 +168,26 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
                 f.write("Rsn%d_%d sn%d_%d sn%d_%d %f\n"% (i+1,j+1,i+1,j+1,i+2,j+1,parasitic_res))
 
     '''
-	f.write("\n\n**********Parasitic Capacitances for sp1 and sn1 Lines****************\n\n")
-	#D = 36*lambda_tech
-	parasitic_cap = 0.5*(1.15*(metal/H)+2.8*(pow((T/H),0.222)))
-	parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/D),1.34))
-	parasitic_cap_final = eps*parasitic_cap*W*1e15
-	p=1
-	f.write("\n**********Partition %d****************\n"%p)
-	for i in range(cell):
-		for j in range(layer2):
-			if (i== cell*p/hpar+min((cell%hpar)/p,1)-1):
-				if (i == layer1):
-					f.write("Csp%d_%d sp%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
-					f.write("Csn%d_%d sn%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
-				else:
-					f.write("Csp%d_%d sp%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
-					f.write("Csn%d_%d sn%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
-					if (j == layer2-1):
-						p+=1
-						f.write("\n**********Partition %d****************\n"%p)
-			else:
+    f.write("\n\n**********Parasitic Capacitances for sp1 and sn1 Lines****************\n\n")
+    #D = 36*lambda_tech
+    parasitic_cap = 0.5*(1.15*(metal/H)+2.8*(pow((T/H),0.222)))
+    parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/D),1.34))
+    parasitic_cap_final = eps*parasitic_cap*W*1e15
+    p=1
+    f.write("\n**********Partition %d****************\n"%p)
+    for i in range(cell):
+        for j in range(layer2):
+	    if (i== cell*p/hpar+min((cell%hpar)/p,1)-1):
+	        if (i == layer1):
+		    f.write("Csp%d_%d sp%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
+		    f.write("Csn%d_%d sn%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
+		else:
+		    f.write("Csp%d_%d sp%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
+		    f.write("Csn%d_%d sn%d_p%d 0 %ff\n"% (i+1,j+1,j+1,p,parasitic_cap_final))
+		if (j == layer2-1):
+		    p+=1
+		    f.write("\n**********Partition %d****************\n"%p)
+	else:
 				f.write("Csp%d_%d sp%d_%d 0 %ff\n"% (i+1,j+1,i+2,j+1,parasitic_cap_final))
 				f.write("Csn%d_%d sn%d_%d 0 %ff\n"% (i+1,j+1,i+2,j+1,parasitic_cap_final))
     '''
