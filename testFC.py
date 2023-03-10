@@ -188,7 +188,7 @@ for ii in range(batch):
     label_data=label[int(testimage*nodes[len(nodes)-1]):int((testimage+testnum_per_batch)*nodes[len(nodes)-1])]
     for item in label_data:
         label_list.append(float(item))
-        g=open(data_dir+'/'+'singletestinput2.txt', "w")
+        g=open(data_dir+'/'+'singletestinput.txt', "w")
         for j2 in range(int(testnum_per_batch*nodes[0])):	
             g.write("%f "%(float(input_data[j2])*Vdd))	
     g.close()
