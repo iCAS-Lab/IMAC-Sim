@@ -38,7 +38,7 @@ def mapFC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,data
 
 
     f.write("\n\n**********Input Test****************\n\n")
-    c=open(data_dir+'/'+'singletestinput1.txt', "r")
+    c=open(data_dir+'/'+'singletestinput.txt', "r")
     input_str = c.readlines()[0].split()
     input_num = [float(num) for num in input_str]
     for line in range(nodes[0]):
