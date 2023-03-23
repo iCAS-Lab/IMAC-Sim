@@ -32,8 +32,8 @@ Follow this paper for more information. Md Hasibul Amin, Mohammed Elbtity, and R
 ## Running the code
 - First go to the directory _data_ and put the input test data, label data, pre-trained weights and biases into the directory. Sample files are provided for a 400 X 120 X 84 X 10 DNN model.
 - Go to the directory _spice_ and put the neuron subcircuit, differential amplifier subcircuit and transistor models into the directory. Sample model files are provided.
-- Open _testFC.py_ and modify the list of inputs as required.
-- Run the IMAC using the command _python testFC.py_. This will build the necessary IMAC subcircuits in the _spice_ directory, run the netlist on HSpice and print the accuracy and power consumption results of your input test cases batch-by-batch in the terminal.
+- Open _testIMAC.py_ and modify the list of inputs as required.
+- Run the IMAC using the command _python testIMAC.py_. This will build the necessary IMAC subcircuits in the _spice_ directory, run the netlist on HSpice and print the accuracy and power consumption results of your input test cases batch-by-batch in the terminal.
 
 
 ## More documentation
