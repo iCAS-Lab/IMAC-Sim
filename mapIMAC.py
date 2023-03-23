@@ -7,7 +7,7 @@
 ############################################################
 import random
 import mapLayer
-def mapFC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,data_dir,spice_dir):
+def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,data_dir,spice_dir):
     f=open(spice_dir+'/'+'classifier.sp', "w")
     f.write("*Fully-connected Classifier\n")
     f.write(".lib './models' ptm14hp\n")    #the transistor library can be changed here (of course in this current format the weighted array does not use a transistor)
