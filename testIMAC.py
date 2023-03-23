@@ -192,7 +192,7 @@ for ii in range(batch):
         for j2 in range(int(testnum_per_batch*nodes[0])):	
             g.write("%f "%(float(input_data[j2])*Vdd))	
     g.close()
-    mapFC.mapFC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir)
+    mapIMAC.mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir)
     os.system('hspice '+spice_dir+'/classifier.sp >'+spice_dir+'/output.txt')
     #os.system('hspice -i '+spice_dir+'/classifier.sp -o '+spice_dir+'/output.txt')
     h=open(spice_dir+'/'+'output.txt', "r")
