@@ -1,7 +1,8 @@
+
 ############################################################
 #                                                          #
-#                    2022 Md Hasibul Amin                  #
-#                    ma77@email.sc.edu                     #
+#          2023 Md Hasibul Amin. All rights reserved.      #
+#                      ma77@email.sc.edu                   #
 #                                                          #
 ############################################################
 import re
@@ -9,22 +10,22 @@ import os
 import time
 import math
 import random
-import mapFC
+import mapIMAC
 import mapWB
 import numpy as np
 import csv
 
 start = time.time()
 
-# list of inputs start
+#list of inputs start
 data_dir='data'
 spice_dir='spice'
 dataset_file='test_data.csv'
 label_file='test_labels.csv'
 noise=0.000   #maximum noise amplitude in Volt
 weight_var=0.0 #variation in the resistance of the synapses in Kohms
-testnum=1
-testnum_per_batch=1
+testnum=10
+testnum_per_batch=2
 firstimage=0 #start the test inputs from this image /500
 Vdd=0.8
 nodes=[400,120,84,10] #Network Topology, which should be similar to what is defined in MATLAB
@@ -40,9 +41,9 @@ W=15*tech_node #width of the bitcell
 D=5*tech_node #distance between sp and sn lines
 eps = 20*8.854e-12 #permittivity of oxide
 rho = 1.9e-8 #resistivity of metal
-# list of inputs end
+#list of inputs end
 
-# device properties start
+#device properties start
 # lMTJ=50e-9
 # wMTJ=30e-9
 # RA=1e-11
@@ -54,9 +55,9 @@ print(rp)
 # rap=(1+(TMR/100.0))*rp
 rap=15e3
 print(rap)
-# device properties end
+#device properties end
 
-# function to change the input voltage in the neuron.sp file, which includes the probabilistic activation function
+#function to update the device resistances in the neuron.sp file, which includes the spice file for activation function
 def update_neuron (rp,rap):
     ff=open(spice_dir+'/'+'neuron.sp', "r+")
     i=0
@@ -73,7 +74,7 @@ def update_neuron (rp,rap):
     ff.writelines(data)
     ff.close()
 
-
+#function to update the gain for the differential amplifiers
 def update_diff (gain, LayerNUM):
     name=spice_dir+'/'+'diff{}.sp'.format(LayerNUM)
     ff=open(name, "r+")
@@ -91,7 +92,7 @@ def update_diff (gain, LayerNUM):
     ff.close()
 
 
-#function to find the measured average voltage or power in the output text file genrated by SPICE(Specifically for MEAUSURE FROM-TO)
+#function to extract the measured average voltage or power from time1 to time2 in the output text file genrated by SPICE
 def findavg (line):
     i=0
     m=0
@@ -118,7 +119,7 @@ def findavg (line):
     volt=volt.replace("t","e12")
     return volt
 
-#function to find the measured voltage in the output2 text file genrated by SPICE (Specifically for MEASURE AT)
+#function to extract the measured voltage at a specific time in the output text file genrated by SPICE
 def findat (line):
     i=0
     m=0
@@ -148,27 +149,26 @@ def findat (line):
 
 #dataset preprocessing
 dataset = np.genfromtxt(data_dir+'/'+dataset_file,delimiter=',')
-dataset_reshaped = np.reshape (dataset,4000000)
-dataset_signed = np.sign(dataset_reshaped)
+dataset_flat = dataset.flatten()
+dataset_bin = np.sign(dataset_flat)
 
-dataset_write = open(data_dir+'/'+'testinput.txt', "w")
-for i in range(len(dataset_signed)):
-    dataset_write.write("%f\n"%(float(dataset_signed[i])))	
-dataset_write.close()
+data_w = open(data_dir+'/'+'testinput.txt', "w")
+for i in range(len(dataset_bin)):
+    data_w.write("%f\n"%(float(dataset_bin[i])))	
+data_w.close()
 
 #label preprocessing
 label = np.genfromtxt(data_dir+'/'+'test_labels.csv',delimiter=',')
-label_reshaped = np.reshape (label,100000)
-label_write = open(data_dir+'/'+'testlabel.txt', "w")
-for i in range(len(label_reshaped)):
-    label_write.write("%f\n"%(float(label_reshaped[i])))	
-label_write.close()
+label_flat = label.flatten()
+label_w = open(data_dir+'/'+'testlabel.txt', "w")
+for i in range(len(label_flat)):
+    label_w.write("%f\n"%(float(label_flat[i])))	
+label_w.close()
 
-
-f=open(data_dir+'/'+'testinput.txt', "r")   # testinput.text is the output of the MATLAB code, which includes the test images in the MNIST Dataset
-f2=open(data_dir+'/'+'testlabel.txt', "r")  # testlabel.text is the output of the MATLAB code, which includes the labels of the test images in the MNIST Dataset
-in_data=f.readlines()
-label=f2.readlines()
+data_r=open(data_dir+'/'+'testinput.txt', "r")   # testinput.txt includes the test images from the MNIST Dataset
+label_r=open(data_dir+'/'+'testlabel.txt', "r")  # testlabel.txt includes the labels of the test images in the MNIST Dataset
+data_all=data_r.readlines()
+label_all=label_r.readlines()
 length=len(nodes)
 #update_neuron(rp,rap)
 for i in range(len(nodes)-1):
@@ -178,68 +178,63 @@ batch=testnum//testnum_per_batch
 image_num=0
 testimage=firstimage
 err=[]
-powr_list=[]
 pwr_list=[]
-for ii in range(batch):
+
+for i in range(batch):
     out_list=[]
-    out2_list=[]
     label_list=[]
-    input_data=in_data[int(testimage*nodes[0]):int((testimage+testnum_per_batch)*nodes[0])]
-    label_data=label[int(testimage*nodes[len(nodes)-1]):int((testimage+testnum_per_batch)*nodes[len(nodes)-1])]
-    for item in label_data:
-        label_list.append(float(item))
-        g=open(data_dir+'/'+'singletestinput.txt', "w")
-        for j2 in range(int(testnum_per_batch*nodes[0])):	
-            g.write("%f "%(float(input_data[j2])*Vdd))	
-    g.close()
+    data_sim=data_all[int(testimage*nodes[0]):int((testimage+testnum_per_batch)*nodes[0])]
+    label_sim=label_all[int(testimage*nodes[len(nodes)-1]):int((testimage+testnum_per_batch)*nodes[len(nodes)-1])]
+    for value in label_sim:
+        label_list.append(float(value))
+    sim_w=open(data_dir+'/'+'data_sim.txt', "w")
+    for j in range(int(testnum_per_batch*nodes[0])):	
+        sim_w.write("%f "%(float(data_sim[j])*Vdd))	
+    sim_w.close()
     mapIMAC.mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir)
     os.system('hspice '+spice_dir+'/classifier.sp >'+spice_dir+'/output.txt')
     #os.system('hspice -i '+spice_dir+'/classifier.sp -o '+spice_dir+'/output.txt')
-    h=open(spice_dir+'/'+'output.txt', "r")
-    for l in h:
-        if 'vout' in l:
-            z=findat(l)
-            out_list.append(z)
-        if 'pwr' in l:
-            z2=findavg(l)
-            pwr_list.append(z2)
-        if 'powr' in l:
-            z3=findavg(l)
-            powr_list.append(z3)
-    for i in range(len(out_list)):
-        out_list[i]=float(out_list[i])
-    for i1 in range (testnum_per_batch):
-        print(i1+image_num+1)
-        print(label_list[nodes[len(nodes)-1]*i1:nodes[len(nodes)-1]*(i1+1)])
+    out_r=open(spice_dir+'/'+'output.txt', "r")
+    for line in out_r:
+        if 'vout' in line:
+            vval=findat(line)
+            out_list.append(float(vval))
+        if 'pwr' in line:
+            pval=findavg(line)
+            pwr_list.append(pval)
+    out_r.close()
+        
+    for j in range (testnum_per_batch):
+        print(j+image_num+1)
+        print(label_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
         err.append(int(0))
-        list_max=max(out_list[nodes[len(nodes)-1]*i1:nodes[len(nodes)-1]*(i1+1)])
-        print(out_list[nodes[len(nodes)-1]*i1:nodes[len(nodes)-1]*(i1+1)])
+        list_max=max(out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
+        print(out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
         print(list_max)
-        for i2 in range (nodes[len(nodes)-1]):
-            if (out_list[nodes[len(nodes)-1]*i1+i2]==list_max):    # the neuron generating maximum output value represents the corrosponding class
-                out_list[nodes[len(nodes)-1]*i1+i2]=1.0
+        for k in range (nodes[len(nodes)-1]):
+            if (out_list[nodes[len(nodes)-1]*j+k]==list_max):    # the neuron generating maximum output value represents the corrosponding class
+                out_list[nodes[len(nodes)-1]*j+k]=1.0
             else:
-                out_list[nodes[len(nodes)-1]*i1+i2]=0.0
-            if (err[i1+image_num]==0):
-                if (out_list[nodes[len(nodes)-1]*i1+i2] != label_list[nodes[len(nodes)-1]*i1+i2]):
-                    err[i1+image_num]=1
-        print(out_list[nodes[len(nodes)-1]*i1:nodes[len(nodes)-1]*(i1+1)])
-        print("Power consumption = %f"%float(powr_list[i1+image_num]))
+                out_list[nodes[len(nodes)-1]*j+k]=0.0
+            if (err[j+image_num]==0):
+                if (out_list[nodes[len(nodes)-1]*j+k] != label_list[nodes[len(nodes)-1]*j+k]):
+                    err[j+image_num]=1
+        print(out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
+        print("Power consumption = %f"%float(pwr_list[j+image_num]))
         print("sum error= %d"%(sum(err)))
     image_num = image_num + testnum_per_batch
     testimage = testimage + testnum_per_batch
 
 
-print("sum error= %d"%(sum(err)))
-f1=open("error.txt", "w")
-f1.write("Number of wrong recognitions in %d input image(s) = %d\n"% ((ii+1), sum(err)))
-f1.close()
-f.close()
-f2.close()
+print("Total error= %d"%(sum(err)))
+err_w=open("error.txt", "w")
+err_w.write("Number of wrong recognitions in %d input image(s) = %d\n"% (image_num, sum(err)))
+err_w.close()
+data_r.close()
+label_r.close()
 
 print("error rate = %f"%(sum(err)/float(testnum)))   #calculate error rate
-print("average vdd power = %f"%(sum(float(x) for x in pwr_list)/float(testnum)))   #calculate average power consumption
-print("average total power = %f"%(sum(float(x) for x in powr_list)/float(testnum)))   #calculate average power consumption
+print("average total power = %f"%(sum(float(x) for x in pwr_list)/float(testnum)))   #calculate average power consumption
 
 
 
@@ -252,6 +247,5 @@ tmin=minute-(60*hour)
 tsec=second-(hour*3600)-(tmin*60)
 
 print("Program Execution Time = %d hours %d minutes %d seconds"%(hour,tmin,tsec))
-
 
 
