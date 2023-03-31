@@ -1,10 +1,11 @@
 
 ############################################################
 #                                                          #
-#               2022 Md Hasibul Amin. All rights reserved. #
-#                    ma77@email.sc.edu.edu                 #
+#          2023 Md Hasibul Amin. All rights reserved.      #
+#                      ma77@email.sc.edu                   #
 #                                                          #
 ############################################################
+
 import random
 import mapLayer
 def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,data_dir,spice_dir):
@@ -38,7 +39,7 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
 
 
     f.write("\n\n**********Input Test****************\n\n")
-    c=open(data_dir+'/'+'singletestinput.txt', "r")
+    c=open(data_dir+'/'+'data_sim.txt', "r")
     input_str = c.readlines()[0].split()
     input_num = [float(num) for num in input_str]
     for line in range(nodes[0]):
@@ -53,14 +54,12 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
     f.write("\n\n\nvdd vdd 0 DC VddVal\n")
     f.write(".TRAN 0.1n %d*tsampling\n"%(testnum))
 
-    for jjj in range(testnum):
-        f.write(".MEASURE TRAN pwr%d AVG 'i(vdd)*VddVal' FROM=%d*tsampling+0.1n TO=%d*tsampling\n"%(jjj,jjj,jjj+1))
-        f.write(".MEASURE TRAN powr%d AVG POWER FROM=%d*tsampling+0.1n TO=%d*tsampling\n"%(jjj,jjj,jjj+1))
+    for i in range(testnum):
+        f.write(".MEASURE TRAN pwr%d AVG POWER FROM=%d*tsampling+0.1n TO=%d*tsampling\n"%(i,i,i+1))
 
-    for jjj in range(testnum):
-        for iii in range(nodes[len(nodes)-1]):
-            f.write(".MEAS TRAN VOUT%d_%d FIND v(output%d) AT=%d*tsampling\n"%(iii,jjj,iii,jjj+1))
+    for i in range(testnum):
+        for j in range(nodes[len(nodes)-1]):
+            f.write(".MEAS TRAN VOUT%d_%d FIND v(output%d) AT=%d*tsampling\n"%(j,i,j,i+1))
     f.close() 
 			
 			
-	
