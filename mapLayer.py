@@ -1,11 +1,11 @@
 
+############################################################
+#                                                          #
+#          2023 Md Hasibul Amin. All rights reserved.      #
+#                      ma77@email.sc.edu                   #
+#                                                          #
+############################################################
 
-############################################################
-#                                                          #
-#               2022 Md Hasibul Amin. All rights reserved. #
-#                    ma77@email.sc.edu                     #
-#                                                          #
-############################################################
 import random
 import numpy as np
 def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,data_dir,spice_dir):  
@@ -213,11 +213,3 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     f.write(".ENDS layer"+ str(LayerNUM))
     f.close()
 
-
-
-
-
-
-			
-			
-	
