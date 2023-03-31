@@ -1,3 +1,11 @@
+
+############################################################
+#                                                          #
+#          2023 Md Hasibul Amin. All rights reserved.      #
+#                      ma77@email.sc.edu                   #
+#                                                          #
+############################################################
+
 import math
 import numpy as np
 import csv
@@ -53,5 +61,4 @@ def mapWB(layernum,rp,rap,nodes,data_dir):
                 bn.write("%f\n"%rp)
 
         g.close()
-
 
