@@ -49,25 +49,25 @@ rho = 1.9e-8 #resistivity of metal
 # RA=1e-11
 # TMR=200
 # AreaMTJ=(math.pi)*lMTJ*wMTJ/4
-# rp=RA/AreaMTJ
-rp=5e3
-print(rp)
-# rap=(1+(TMR/100.0))*rp
-rap=15e3
-print(rap)
+# rlow=RA/AreaMTJ
+rlow=5e3
+print(rlow)
+# rhigh=(1+(TMR/100.0))*rp
+rhigh=15e3
+print(rhigh)
 #device properties end
 
 #function to update the device resistances in the neuron.sp file, which includes the spice file for activation function
-def update_neuron (rp,rap):
+def update_neuron (rlow,rhigh):
     ff=open(spice_dir+'/'+'neuron.sp', "r+")
     i=0
     data= ff.readlines()
     for line in data:
         i+=1
         if 'Rlow' in line:
-            data[i-1]='Rlow in2 input ' + str(rp) +'\n'
+            data[i-1]='Rlow in2 input ' + str(rlow) +'\n'
         if 'Rhigh' in line:
-            data[i-1]='Rhigh input out ' + str(rap) +'\n'
+            data[i-1]='Rhigh input out ' + str(rhigh) +'\n'
 
     ff.seek(0)
     ff.truncate()
@@ -167,13 +167,13 @@ label_w.close()
 
 data_r=open(data_dir+'/'+'testinput.txt', "r")   # testinput.txt includes the test images from the MNIST Dataset
 label_r=open(data_dir+'/'+'testlabel.txt', "r")  # testlabel.txt includes the labels of the test images in the MNIST Dataset
-data_all=data_r.readlines()
-label_all=label_r.readlines()
-length=len(nodes)
-#update_neuron(rp,rap)
+data_all=data_r.readlines() #data_all contains all test images
+label_all=label_r.readlines() #label_all contains all labels
+length=len(nodes) #length contains the number of layers in DNN model
+#update_neuron(rp,rap) #updates the resistances in the neuron
 for i in range(len(nodes)-1):
-    update_diff(gain[i],i+1)
-mapWB.mapWB(length,rp,rap,nodes,data_dir)
+    update_diff(gain[i],i+1) #updates the differential amplifier gains
+mapWB.mapWB(length,rlow,rhigh,nodes,data_dir) #calling mapWB which sets the corresponding resistance value for weights and biases
 batch=testnum//testnum_per_batch
 image_num=0
 testimage=firstimage
