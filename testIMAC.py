@@ -18,21 +18,21 @@ import csv
 start = time.time()
 
 #list of inputs start
-data_dir='data'
-spice_dir='spice'
-dataset_file='test_data.csv'
-label_file='test_labels.csv'
+data_dir='data' #The directory where data files are located
+spice_dir='spice' #The directory where spice files are located
+dataset_file='test_data.csv' #Name of the dataset file
+label_file='test_labels.csv' #Name of the label file
 weight_var=0.0 #variation in the resistance of the synapses in Kohms
-testnum=10
-testnum_per_batch=2
+testnum=4 #Number of input test cases to run
+testnum_per_batch=2 #Number of test cases in a single batch, testnum should be divisible by this number
 firstimage=0 #start the test inputs from this image /500
-Vdd=0.8
-nodes=[400,120,84,10] #Network Topology, which should be similar to what is defined in MATLAB
-hpar=[13,4,3]
-vpar=[4,3,1]
-gain=[30,30,10]
-tech_node=9e-9
-metal=3*tech_node #Metal width
+Vdd=0.8 #The highest voltage
+nodes=[400,120,84,10] #Network Topology, an array which defines the DNN model size
+hpar=[13,4,3] #Array for the horizontal partitioning of all hidden layers
+vpar=[4,3,1] #Array for the vertical partitioning of all hidden layers
+gain=[30,30,10] #Array for the differential amplifier gains of all hidden layers
+tech_node=9e-9 #The technology node e.g. 9nm, 45nm etc.
+metal=3*tech_node #Width of the metal line for parasitic calculation
 T=22e-9 #Metal thickness
 H=20e-9 #Inter metal layer spacing
 L=12*tech_node #length of the bitcell
@@ -49,10 +49,10 @@ rho = 1.9e-8 #resistivity of metal
 # TMR=200
 # AreaMTJ=(math.pi)*lMTJ*wMTJ/4
 # rlow=RA/AreaMTJ
-rlow=5e3
+rlow=5e3 #Low resistance level of the memristive device
 print(rlow)
 # rhigh=(1+(TMR/100.0))*rp
-rhigh=15e3
+rhigh=15e3 #High resistance level of the memristive device
 print(rhigh)
 #device properties end
 
@@ -81,6 +81,8 @@ def update_diff (gain, LayerNUM):
     data= ff.readlines()
     for line in data:
         i+=1
+        if 'Gain' in line:
+            data[i-1]='*Differential Amplifier with Gain=' + str(gain) +'\n'
         if 'R3' in line:
             data[i-1]='R3 n1 out ' + str(gain) +'k\n'
         if 'R4' in line:
@@ -246,5 +248,3 @@ tmin=minute-(60*hour)
 tsec=second-(hour*3600)-(tmin*60)
 
 print("Program Execution Time = %d hours %d minutes %d seconds"%(hour,tmin,tsec))
-
-
