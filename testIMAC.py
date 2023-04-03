@@ -22,7 +22,6 @@ data_dir='data'
 spice_dir='spice'
 dataset_file='test_data.csv'
 label_file='test_labels.csv'
-noise=0.000   #maximum noise amplitude in Volt
 weight_var=0.0 #variation in the resistance of the synapses in Kohms
 testnum=10
 testnum_per_batch=2
