@@ -5,7 +5,6 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - spice_dir: The directory where spice files are located
 - dataset_file: Name of the dataset file
 - label_file: Name of the label file
-- noise: maximum noise amplitude in Volt
 - weight_var: variation in the resistance of the synapses in Kohms
 - testnum: Number of input test cases to run
 - testnum_per_batch: Number of test cases in a single batch
