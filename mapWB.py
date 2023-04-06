@@ -17,7 +17,6 @@ def mapWB(layernum,rlow,rhigh,nodes,data_dir):
         j=i+1
         weight=np.genfromtxt(data_dir+'/'+'W'+str(j)+'.csv',delimiter=',')
         w_flat=np.reshape(weight,nodes[i]*nodes[i+1])
-        print(w_flat)
         weight_w=open('data/W'+str(j)+'.txt', "w")
         for k in range(len(w_flat)):
             x=float(w_flat[k])
