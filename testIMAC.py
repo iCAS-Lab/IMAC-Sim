@@ -37,7 +37,7 @@ T=22e-9 #Metal thickness
 H=20e-9 #Inter metal layer spacing
 L=12*tech_node #length of the bitcell
 W=15*tech_node #width of the bitcell
-D=5*tech_node #distance between sp and sn lines
+D=5*tech_node #distance between I+ and I- lines
 eps = 20*8.854e-12 #permittivity of oxide
 rho = 1.9e-8 #resistivity of metal
 #list of inputs end
