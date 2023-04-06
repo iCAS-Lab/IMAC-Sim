@@ -10,8 +10,6 @@ import math
 import numpy as np
 import csv
 
-
-
 def mapWB(layernum,rlow,rhigh,nodes,data_dir):
     for i in range(layernum-1):
         j=i+1
@@ -37,9 +35,10 @@ def mapWB(layernum,rlow,rhigh,nodes,data_dir):
             if (float(l)==0):
                 wp.write("%f\n"%rlow)
                 wn.write("%f\n"%rlow)
-
-            
+        wp.close()
+        wn.close()
         f.close()
+        
         g=open(data_dir+'/'+'B'+str(j)+'.txt',"r")
         bp=open(data_dir+'/'+'posbias'+str(j)+'.txt', "w")
         bn=open(data_dir+'/'+'negbias'+str(j)+'.txt', "w")
@@ -53,5 +52,6 @@ def mapWB(layernum,rlow,rhigh,nodes,data_dir):
             if (float(l)==0):
                 bp.write("%f\n"%rlow)
                 bn.write("%f\n"%rlow)
-
+        bp.close()
+        bn.close()
         g.close()
