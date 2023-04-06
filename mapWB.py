@@ -15,21 +15,16 @@ import csv
 def mapWB(layernum,rlow,rhigh,nodes,data_dir):
     for i in range(layernum-1):
         j=i+1
-        with open(data_dir+'/'+'W'+str(j)+'.txt', 'r') as r, open(data_dir+'/'+'W_nocomma'+str(j)+'.txt', 'w') as w:
-            for num, line in enumerate(r):
-                if num >= 0:
-                    newline = line[:-2] + "\n" if "\n" in line else line[:-1]
-                else:
-                    newline = line
-                w.write(newline)
-        a=np.genfromtxt(data_dir+'/'+'W_nocomma'+str(j)+'.txt',delimiter=',')
-        b=np.reshape (a,nodes[i]*nodes[i+1])
-        g=open('data/W'+str(j)+'.txt', "w")
-        for jj in range(len(b)):
-            x=float(b[jj])
+        weight=np.genfromtxt(data_dir+'/'+'W'+str(j)+'.csv',delimiter=',')
+        w_flat=np.reshape(weight,nodes[i]*nodes[i+1])
+        print(w_flat)
+        weight_w=open('data/W'+str(j)+'.txt', "w")
+        for k in range(len(w_flat)):
+            x=float(w_flat[k])
             if (str(x)!='nan'):
-                g.write("%f\n"%(float(b[jj])))	
-        g.close()
+                weight_w.write("%f\n"%(float(w_flat[k])))
+        weight_w.close()
+        
         f=open(data_dir+'/'+'W'+str(j)+'.txt',"r")
         wp=open(data_dir+'/'+'posweight'+str(j)+'.txt', "w")
         wn=open(data_dir+'/'+'negweight'+str(j)+'.txt', "w")
@@ -61,4 +56,3 @@ def mapWB(layernum,rlow,rhigh,nodes,data_dir):
                 bn.write("%f\n"%rlow)
 
         g.close()
-
