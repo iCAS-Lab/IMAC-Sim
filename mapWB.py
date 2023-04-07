@@ -9,8 +9,10 @@
 import math
 import numpy as np
 import csv
+import random
 
-def mapWB(layernum,rlow,rhigh,nodes,data_dir):
+
+def mapWB(layernum,rlow,rhigh,nodes,data_dir,weight_var):
     for i in range(layernum-1):
         j=i+1
         weight=np.genfromtxt(data_dir+'/'+'W'+str(j)+'.csv',delimiter=',')
@@ -27,14 +29,14 @@ def mapWB(layernum,rlow,rhigh,nodes,data_dir):
         wn=open(data_dir+'/'+'negweight'+str(j)+'.txt', "w")
         for l in f:
             if (float(l)==1):
-                wp.write("%f\n"%rlow)
-                wn.write("%f\n"%rhigh)
+                wp.write("%f\n"%(rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100)))
+                wn.write("%f\n"%(rhigh+random.uniform(-1*weight_var*rhigh/100,weight_var*rhigh/100)))
             if (float(l)==-1):
-                wp.write("%f\n"%rhigh)
-                wn.write("%f\n"%rlow)
+                wp.write("%f\n"%rhigh+random.uniform(-1*weight_var*rhigh/100,weight_var*rhigh/100))
+                wn.write("%f\n"%rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100))
             if (float(l)==0):
-                wp.write("%f\n"%rlow)
-                wn.write("%f\n"%rlow)
+                wp.write("%f\n"%rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100))
+                wn.write("%f\n"%rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100))
         wp.close()
         wn.close()
         f.close()
@@ -44,14 +46,14 @@ def mapWB(layernum,rlow,rhigh,nodes,data_dir):
         bn=open(data_dir+'/'+'negbias'+str(j)+'.txt', "w")
         for l in g:
             if (float(l)==1):
-                bp.write("%f\n"%rlow)
-                bn.write("%f\n"%rhigh)
+                bp.write("%f\n"%rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100))
+                bn.write("%f\n"%rhigh+random.uniform(-1*weight_var*rhigh/100,weight_var*rhigh/100))
             if (float(l)==-1):
-                bp.write("%f\n"%rhigh)
-                bn.write("%f\n"%rlow)
+                bp.write("%f\n"%rhigh+random.uniform(-1*weight_var*rhigh/100,weight_var*rhigh/100))
+                bn.write("%f\n"%rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100))
             if (float(l)==0):
-                bp.write("%f\n"%rlow)
-                bn.write("%f\n"%rlow)
+                bp.write("%f\n"%rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100))
+                bn.write("%f\n"%rlow+random.uniform(-1*weight_var*rlow/100,weight_var*rlow/100))
         bp.close()
         bn.close()
         g.close()
