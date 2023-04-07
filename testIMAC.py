@@ -22,10 +22,10 @@ data_dir='data' #The directory where data files are located
 spice_dir='spice' #The directory where spice files are located
 dataset_file='test_data.csv' #Name of the dataset file
 label_file='test_labels.csv' #Name of the label file
-weight_var=0.0 #variation in the resistance of the synapses in Kohms
+weight_var=0.0 #percentage variation in the resistance of the synapses
 testnum=4 #Number of input test cases to run
 testnum_per_batch=2 #Number of test cases in a single batch, testnum should be divisible by this number
-firstimage=0 #start the test inputs from this image /500
+firstimage=0 #start the test inputs from this image
 Vdd=0.8 #The highest voltage
 nodes=[400,120,84,10] #Network Topology, an array which defines the DNN model size
 hpar=[13,4,3] #Array for the horizontal partitioning of all hidden layers
@@ -174,12 +174,12 @@ length=len(nodes) #length contains the number of layers in DNN model
 #update_neuron(rp,rap) #updates the resistances in the neuron
 for i in range(len(nodes)-1):
     update_diff(gain[i],i+1) #updates the differential amplifier gains
-mapWB.mapWB(length,rlow,rhigh,nodes,data_dir) #calling mapWB which sets the corresponding resistance value for weights and biases
-batch=testnum//testnum_per_batch
-image_num=0
+mapWB.mapWB(length,rlow,rhigh,nodes,data_dir,weight_var) #calling mapWB which sets the corresponding resistance value for weights and biases
+batch=testnum//testnum_per_batch #calculates the number of batch for the simulation
+image_num=0 #number of image in the simulation
 testimage=firstimage
-err=[]
-pwr_list=[]
+err=[] #the array containing error information for each test case
+pwr_list=[] #the array containing power information for each test case
 
 for i in range(batch):
     out_list=[]
@@ -248,3 +248,4 @@ tmin=minute-(60*hour)
 tsec=second-(hour*3600)-(tmin*60)
 
 print("Program Execution Time = %d hours %d minutes %d seconds"%(hour,tmin,tsec))
+
