@@ -29,7 +29,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     for l in g:
         if (float(l)!=0):
             if (m < layer2+1):
-                f.write("Rwpos%d_%d in%d_%d sp%d_%d %f\n"% (n,m,n,m,n,m,float(l)+random.uniform(-1*weight_var,weight_var)))
+                f.write("Rwpos%d_%d in%d_%d sp%d_%d %f\n"% (n,m,n,m,n,m,float(l)))
                 m+=1;
             else:
                 n+=1;
@@ -37,7 +37,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
                 if (n == int(cell*i/hpar+min((cell%hpar)/i,1)+1)):
                     i+=1
                     f.write("\n**********Horizontal Partition %d****************\n"%i)
-                f.write("Rwpos%d_%d in%d_%d sp%d_%d %f\n"% (n,m,n,m,n,m,float(l)+random.uniform(-1*weight_var,weight_var)))
+                f.write("Rwpos%d_%d in%d_%d sp%d_%d %f\n"% (n,m,n,m,n,m,float(l)))
                 m+=1;
         else:
             m+=1;
@@ -51,7 +51,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     for l in h:
         if (float(l)!=0):
             if (m < layer2+1):
-                f.write("Rwneg%d_%d in%d_%d sn%d_%d %f\n"% (n,m,n,m,n,m,float(l)+random.uniform(-1*weight_var,weight_var)))
+                f.write("Rwneg%d_%d in%d_%d sn%d_%d %f\n"% (n,m,n,m,n,m,float(l)))
                 m+=1;
             else:
                 n+=1;
@@ -59,7 +59,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
                 if (n == int(cell*i/hpar+min((cell%hpar)/i,1)+1)):
                     i+=1
                     f.write("\n**********Horizontal Partition %d****************\n"%i)
-                f.write("Rwneg%d_%d in%d_%d sn%d_%d %f\n"% (n,m,n,m,n,m,float(l)+random.uniform(-1*weight_var,weight_var)))
+                f.write("Rwneg%d_%d in%d_%d sn%d_%d %f\n"% (n,m,n,m,n,m,float(l)))
                 m+=1;
         else:
             m+=1;
@@ -71,7 +71,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     a=open(data_dir+'/'+'posbias'+str(LayerNUM)+".txt", "r")
     for l in a:
         if (float(l)!=0):
-            f.write("Rbpos%d vd%d sp%d_%d %f\n"% (m,m,layer1+1,m,float(l)+random.uniform(-1*weight_var,weight_var)))
+            f.write("Rbpos%d vd%d sp%d_%d %f\n"% (m,m,layer1+1,m,float(l)))
             m+=1;
         else:
             m+=1;
@@ -83,7 +83,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     b=open(data_dir+'/'+'negbias'+str(LayerNUM)+".txt", "r")
     for l in b:
         if (float(l)!=0):
-            f.write("Rbneg%d vd%d sn%d_%d %f\n"% (m,m,layer1+1,m,float(l)+random.uniform(-1*weight_var,weight_var)))
+            f.write("Rbneg%d vd%d sn%d_%d %f\n"% (m,m,layer1+1,m,float(l)))
             m+=1;
         else:
             m+=1;
@@ -212,4 +212,3 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     
     f.write(".ENDS layer"+ str(LayerNUM))
     f.close()
-
