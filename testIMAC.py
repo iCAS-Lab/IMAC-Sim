@@ -193,8 +193,9 @@ for i in range(batch):
         sim_w.write("%f "%(float(data_sim[j])*Vdd))	
     sim_w.close()
     mapIMAC.mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir)
-    os.system('hspice '+spice_dir+'/classifier.sp >'+spice_dir+'/output.txt')
-    #os.system('hspice -i '+spice_dir+'/classifier.sp -o '+spice_dir+'/output.txt')
+    os.chdir(spice_dir)
+    os.system('hspice classifier.sp > output.txt')
+    os.chdir('..')
     out_r=open(spice_dir+'/'+'output.txt', "r")
     for line in out_r:
         if 'vout' in line:
