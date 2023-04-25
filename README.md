@@ -5,7 +5,7 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - spice_dir: The directory where spice files are located
 - dataset_file: Name of the dataset file
 - label_file: Name of the label file
-- weight_var: variation in the resistance of the synapses in Kohms
+- weight_var: percentage variation in the resistance of the synapses
 - testnum: Number of input test cases to run
 - testnum_per_batch: Number of test cases in a single batch
 - firstimage: Starting point of the test inputs in the dataset file
@@ -26,12 +26,13 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - rlow: Low resistance level of the memristive device
 - rhigh: High resistance level of the memristive device
 
-Follow this paper for more information. Md Hasibul Amin, Mohammed Elbtity, and Ramtin Zand. 2022. A python framework for spice circuit simulation of in-memory analog computing circuits. (2022). https://arxiv.org/abs/2210.17410
+Follow this paper for more information. Md Hasibul Amin, Mohammed E. Elbtity, and Ramtin Zand. 2023. IMAC-Sim: A Circuit-level Simulator For In-Memory Analog Computing Architectures (2023). https://arxiv.org/abs/2304.09252
 
 ## Running the code
 - First go to the directory _data_ and put the input test data, label data, pre-trained weights and biases into the directory. Sample files are provided for a 400 X 120 X 84 X 10 DNN model.
 - Go to the directory _spice_ and put the neuron subcircuit, differential amplifier subcircuit and transistor models into the directory. Sample model files are provided.
 - Open _testIMAC.py_ and modify the list of inputs as required.
+- Make sure you have HSpice installed and accessible in your machine through _hspice_ command in the terminal. The code initiates a HSpice run through an os.system call of the _hspice_ command.
 - Run the IMAC using the command _python testIMAC.py_. This will build the necessary IMAC subcircuits in the _spice_ directory, run the netlist on HSpice and print the accuracy and power consumption results of your input test cases batch-by-batch in the terminal.
 
 
