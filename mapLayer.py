@@ -25,7 +25,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
         f.write("out%d "%i2)
     i=1
     f.write("\n\n**********Non-Negative Weighted Array****************\n")
-    f.write("\n**********Horizontal Partition %d****************\n"%i)
     for l in g:
         if (float(l)!=0):
             if (m < layer2+1):
@@ -36,7 +35,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
                 m=1;
                 if (n == int(cell*i/hpar+min((cell%hpar)/i,1)+1)):
                     i+=1
-                    f.write("\n**********Horizontal Partition %d****************\n"%i)
                 f.write("Rwpos%d_%d in%d_%d sp%d_%d %f\n"% (n,m,n,m,n,m,float(l)))
                 m+=1;
         else:
@@ -47,7 +45,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     i=1;
     g.close()
     h=open(data_dir+'/'+'negweight'+str(LayerNUM)+".txt", "r")
-    f.write("\n**********Horizontal Partition %d****************\n"%i)
     for l in h:
         if (float(l)!=0):
             if (m < layer2+1):
@@ -58,7 +55,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
                 m=1;
                 if (n == int(cell*i/hpar+min((cell%hpar)/i,1)+1)):
                     i+=1
-                    f.write("\n**********Horizontal Partition %d****************\n"%i)
                 f.write("Rwneg%d_%d in%d_%d sn%d_%d %f\n"% (n,m,n,m,n,m,float(l)))
                 m+=1;
         else:
@@ -100,7 +96,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     dgrain_scatt = pow((1-3*alpha/2+3*pow(alpha,2)-3*pow(alpha,3)*np.log(1+1/alpha)),-1)
     rho_new = rho * (dsur_scatt + dgrain_scatt)
     parasitic_res = rho_new*L/(metal*T)
-    #f.write("\n**********Partition %d****************\n"%p)
     for i in range(cell):
         p=1
         for j in range(layer2):
@@ -150,7 +145,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     #rho = 1.9e-8
     parasitic_res = rho_new*L/(metal*T)
     p=1
-    f.write("\n**********Horizontal Partition %d****************\n"%p)
     for i in range(cell):
         for j in range(layer2):
             if (i == int(cell*p/hpar+min((cell%hpar)/p,1)-1)):
@@ -162,7 +156,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
                     f.write("Rsn%d_%d sn%d_%d sn%d_p%d %f\n"% (i+1,j+1,i+1,j+1,j+1,p,parasitic_res))
                     if (j == layer2-1):
                         p+=1;
-                        f.write("\n**********Horizontal Partition %d****************\n"%p)
             else:
                 f.write("Rsp%d_%d sp%d_%d sp%d_%d %f\n"% (i+1,j+1,i+1,j+1,i+2,j+1,parasitic_res))
                 f.write("Rsn%d_%d sn%d_%d sn%d_%d %f\n"% (i+1,j+1,i+1,j+1,i+2,j+1,parasitic_res))
@@ -174,7 +167,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/D),1.34))
     parasitic_cap_final = eps*parasitic_cap*W*1e15
     p=1
-    f.write("\n**********Partition %d****************\n"%p)
     for i in range(cell):
         for j in range(layer2):
             if (i== cell*p/hpar+min((cell%hpar)/p,1)-1):
@@ -196,7 +188,6 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
 
     f.write("\n\n**********Weight Differntial Op-AMPS and Connecting Resistors****************\n\n")
     for ii in range(hpar):
-        f.write("\n**********Horizontal Partition %d****************\n"%(ii+1))
         for jj in range(layer2):
             f.write("XDIFFw%d_p%d sp%d_p%d sn%d_p%d xin%d_%d diff%d\n"% (jj+1,ii+1,jj+1,ii+1,jj+1,ii+1,jj+1,ii+1,LayerNUM))
             f.write("Rconn%d_p%d xin%d_%d xin%d 1m\n"% (jj+1,ii+1,jj+1,ii+1,jj+1))
