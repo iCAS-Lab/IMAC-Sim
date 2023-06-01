@@ -24,6 +24,15 @@ def mapWB(layernum,rlow,rhigh,nodes,data_dir,weight_var):
                 weight_w.write("%f\n"%(float(w_flat[k])))
         weight_w.close()
         
+        bias=np.genfromtxt(data_dir+'/'+'B'+str(j)+'.csv',delimiter=',')
+        b_flat=np.reshape(bias,nodes[i+1])
+        bias_w=open('data/B'+str(j)+'.txt', "w")
+        for k in range(len(b_flat)):
+            x=float(b_flat[k])
+            if (str(x)!='nan'):
+                bias_w.write("%f\n"%(float(b_flat[k])))
+        bias_w.close()
+        
         f=open(data_dir+'/'+'W'+str(j)+'.txt',"r")
         wp=open(data_dir+'/'+'posweight'+str(j)+'.txt', "w")
         wn=open(data_dir+'/'+'negweight'+str(j)+'.txt', "w")
