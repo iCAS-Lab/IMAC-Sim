@@ -13,6 +13,6 @@ Sample model files provided here are for a 400 X 120 X 84 X 10 DNN model.
 - W1.csv: 400 X 120 csv file, representing the weights for the first layer.
 - W2.csv: 120 X 84 csv file, representing the weights for the second layer.
 - W3.csv: 84 X 10 csv file, representing the weights for the third layer.
-- B1.txt: 120 X 1 txt file, representing the biases for the second layer.
-- B2.txt: 84 X 1 txt file, representing the biases for the first layer.
-- B3.txt: 10 X 1 txt file, representing the biases for the second layer.
+- B1.txt: 120 X 1 txt file, representing the biases for the first layer.
+- B2.txt: 84 X 1 txt file, representing the biases for the second layer.
+- B3.txt: 10 X 1 txt file, representing the biases for the third layer.
