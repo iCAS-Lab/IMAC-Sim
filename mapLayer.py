@@ -197,7 +197,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
         c=i+1 # column number
         for j in range(layer2):
             r=j+1 # row number
-            if (i == layer1_wb*n_hpar/hpar+min((layer1_wb%hpar)/n_hpar,1)-1):
+            if (i == int(layer1_wb*n_hpar/hpar+min((layer1_wb%hpar)/n_hpar,1)-1)):
                 if (i == layer1):
                     layer_w.write("Csp%d_%d sp%d_p%d 0 %ff\n"% (c,r,r,n_hpar,parasitic_cap_final))
                     layer_w.write("Csn%d_%d sn%d_p%d 0 %ff\n"% (c,r,r,n_hpar,parasitic_cap_final))
@@ -209,6 +209,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
             else:
                 layer_w.write("Csp%d_%d sp%d_%d 0 %ff\n"% (c,r,c+1,r,parasitic_cap_final))
                 layer_w.write("Csn%d_%d sn%d_%d 0 %ff\n"% (c,r,c+1,r,parasitic_cap_final))
+    
     '''
     
     
