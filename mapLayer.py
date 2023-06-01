@@ -134,25 +134,32 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     '''
     # writing the circuit for vertical line parasitic capacitances
     layer_w.write("\n\n**********Parasitic Capacitances for Vertical Lines**********\n\n")
-    for i in range((layer1+2)/2):
+    for i in range(int((layer1_wb+1)/2)):
         c=i+1 # column number
         if (i==0):
             parasitic_cap = 0.5*(1.15*(metal/H)+2.8*(pow((T/H),0.222)));
-            for j in range(layer1+1):
+            #calculating the parasitic capacitance for the first and last line considering the effect of all other lines
+            for j in range(layer1_wb):
                 if (i!=j):
                     Wij = W*abs(i-j)
                     parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/Wij),1.34))
+                    parasitic_cap_final = eps*parasitic_cap*W*1e15
+            # writing the first and last line capacitances
+            for j in range(layer2):
+                r=j+1
+                layer_w.write("C%d_%d in%d_%d 0 %ff\n"% (c,r,c,r,parasitic_cap_final))
+                layer_w.write("Cbias%d vd%d 0 %ff\n"% (r,r,parasitic_cap_final))
         else:
+            # updating the parasitic capacitance based on line position
             parasitic_cap = parasitic_cap + (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/(W*i)),1.34)) - (0.03*(metal/H)+0.83*(T/H)-0.07*(pow((T/H),0.222)))*(pow((H/(W*(layer1-i+1))),1.34))
             parasitic_cap_final = eps*parasitic_cap*W*1e15
+            # writing the line capacitances
             for j in range(layer2):
                 r=j+1 # row number
                 layer_w.write("C%d_%d in%d_%d 0 %ff\n"% (c,r,c,r,parasitic_cap_final))
-                if ((layer1+1)%2==0 or i!=(layer1)/2):
-                    if (i==0):
-                        layer_w.write("Cbias%d vd%d 0 %ff\n"% (r,r,parasitic_cap_final))
-                    else:
-                        layer_w.write("C%d_%d in%d_%d 0 %ff\n"% (layer1+1-i,r,layer1+1-i,r,parasitic_cap_final))
+                if ((layer1_wb%2)!=0 and i==int(layer1/2)):
+                    continue
+                layer_w.write("C%d_%d in%d_%d 0 %ff\n"% (layer1+1-i,r,layer1+1-i,r,parasitic_cap_final))
     '''
     
     
