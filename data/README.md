@@ -3,7 +3,7 @@ The _data_ directory should contain the test inputs, labels, weights and biases 
 - test_data.csv: Input test data
 - test_labels.csv: The labels for the test data
 - Wi.csv: The weights for the ith layer.
-- Bi.csv: The biases for the ith layer.
+- Bi.txt: The biases for the ith layer.
 
 
 ## Sample model files
@@ -13,6 +13,6 @@ Sample model files provided here are for a 400 X 120 X 84 X 10 DNN model.
 - W1.csv: 400 X 120 csv file, representing the weights for the first layer.
 - W2.csv: 120 X 84 csv file, representing the weights for the second layer.
 - W3.csv: 84 X 10 csv file, representing the weights for the third layer.
-- B1.csv: 120 X 1 csv file, representing the biases for the second layer.
-- B2.csv: 84 X 1 csv file, representing the biases for the first layer.
-- B3.csv: 10 X 1 csv file, representing the biases for the second layer.
+- B1.txt: 120 X 1 txt file, representing the biases for the second layer.
+- B2.txt: 84 X 1 txt file, representing the biases for the first layer.
+- B3.txt: 10 X 1 txt file, representing the biases for the second layer.
