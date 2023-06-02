@@ -11,7 +11,7 @@ import mapLayer
 def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,data_dir,spice_dir):
     f=open(spice_dir+'/'+'classifier.sp', "w")
     f.write("*Fully-connected Classifier\n")
-    f.write(".lib './models' ptm14hp\n")    #the transistor library can be changed here (of course in this current format the weighted array does not use a transistor)
+    f.write(".lib './models' ptm14hp\n")    #the transistor library can be changed here (The current format does not use transistor for the weighted array)
     for x in range(len(nodes)-1):		
         f.write('.include diff'+str(x+1)+'.sp\n')
     f.write(".include 'neuron.sp'\n")
