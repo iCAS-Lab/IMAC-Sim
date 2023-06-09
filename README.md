@@ -9,9 +9,9 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - testnum: Number of input test cases to run
 - testnum_per_batch: Number of test cases in a single batch
 - firstimage: Starting point of the test inputs in the dataset file
-- vdd=0.8 #The positive supply voltage
-- vss=-0.8 #The negative supply voltage
-- tsampling=1 #The sampling time in nanosecond
+- vdd: The positive supply voltage
+- vss: The negative supply voltage
+- tsampling: The sampling time in nanosecond
 - nodes: Network Topology, an array which defines the DNN model size
 - hpar: Array for the horizontal partitioning of all hidden layers
 - vpar: Array for the vertical partitioning of all hidden layers
