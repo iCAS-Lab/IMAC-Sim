@@ -8,7 +8,7 @@
 
 import random
 import mapLayer
-def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,data_dir,spice_dir):
+def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,data_dir,spice_dir,vdd,vss,tsampling):
     f=open(spice_dir+'/'+'classifier.sp', "w")
     f.write("*Fully-connected Classifier\n")
     f.write(".lib './models' ptm14hp\n")    #the transistor library can be changed here (The current format does not use transistor for the weighted array)
@@ -17,9 +17,9 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
     f.write(".include 'neuron.sp'\n")
     f.write(".option post\n")
     f.write(".op\n")
-    f.write(".PARAM VddVal=0.8\n")
-    f.write(".PARAM VssVal=-0.8\n")
-    f.write(".PARAM tsampling=1n\n")
+    f.write(".PARAM VddVal=%f\n"%vdd)
+    f.write(".PARAM VssVal=%f\n"%vss)
+    f.write(".PARAM tsampling=%fn\n"%tsampling)
     for i in range(len(nodes)-1):
         f.write(".include 'layer"+ str(i+1)+".sp'\n")
     for i in range(len(nodes)-1):
