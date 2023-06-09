@@ -26,7 +26,9 @@ weight_var=0.0 #percentage variation in the resistance of the synapses
 testnum=4 #Number of input test cases to run
 testnum_per_batch=2 #Number of test cases in a single batch, testnum should be divisible by this number
 firstimage=0 #start the test inputs from this image
-Vdd=0.8 #The highest voltage
+vdd=0.8 #The positive supply voltage
+vss=-0.8 #The negative supply voltage
+tsampling=1 #The sampling time in nanosecond
 nodes=[400,120,84,10] #Network Topology, an array which defines the DNN model size
 hpar=[13,4,3] #Array for the horizontal partitioning of all hidden layers
 vpar=[4,3,1] #Array for the vertical partitioning of all hidden layers
@@ -40,21 +42,12 @@ W=12*tech_node #width of the bitcell
 D=5*tech_node #distance between I+ and I- lines
 eps = 20*8.854e-12 #permittivity of oxide
 rho = 1.9e-8 #resistivity of metal
+rlow=5e3 #Low resistance level of the memristive device
+rhigh=15e3 #High resistance level of the memristive device
 #list of inputs end
 
-#device properties start
-# lMTJ=50e-9
-# wMTJ=30e-9
-# RA=1e-11
-# TMR=200
-# AreaMTJ=(math.pi)*lMTJ*wMTJ/4
-# rlow=RA/AreaMTJ
-rlow=5e3 #Low resistance level of the memristive device
-print(rlow)
-# rhigh=(1+(TMR/100.0))*rp
-rhigh=15e3 #High resistance level of the memristive device
-print(rhigh)
-#device properties end
+print('Rlow=%f'%rlow)
+print('Rhigh=%f'%rhigh)
 
 #function to update the device resistances in the neuron.sp file, which includes the spice file for activation function
 def update_neuron (rlow,rhigh):
@@ -190,9 +183,9 @@ for i in range(batch):
         label_list.append(float(value))
     sim_w=open(data_dir+'/'+'data_sim.txt', "w")
     for j in range(int(testnum_per_batch*nodes[0])):	
-        sim_w.write("%f "%(float(data_sim[j])*Vdd))	
+        sim_w.write("%f "%(float(data_sim[j])*vdd))	
     sim_w.close()
-    mapIMAC.mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir)
+    mapIMAC.mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir,vdd,vss,tsampling)
     os.chdir(spice_dir)
     os.system('hspice classifier.sp > output.txt')
     os.chdir('..')
