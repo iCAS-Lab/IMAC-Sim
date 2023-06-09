@@ -28,7 +28,7 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - rlow: Low resistance level of the memristive device
 - rhigh: High resistance level of the memristive device
 
-Follow this paper for more information. Md Hasibul Amin, Mohammed E. Elbtity, and Ramtin Zand. 2023. IMAC-Sim: A Circuit-level Simulator For In-Memory Analog Computing Architectures (2023). https://arxiv.org/abs/2304.09252
+Follow this paper for more information. Md Hasibul Amin, Mohammed E. Elbtity, and Ramtin Zand. 2023. IMAC-Sim: A Circuit-level Simulator For In-Memory Analog Computing Architectures. In Proceedings of the Great Lakes Symposium on VLSI 2023 (GLSVLSI '23). Association for Computing Machinery, New York, NY, USA, 659–664. https://doi.org/10.1145/3583781.3590264
 
 ## Running the code
 - First go to the directory _data_ and put the input test data, label data, pre-trained weights and biases into the directory. Sample files are provided for a 400 X 120 X 84 X 10 DNN model.
