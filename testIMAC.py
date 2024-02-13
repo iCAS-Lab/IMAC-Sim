@@ -164,7 +164,7 @@ label_r=open(data_dir+'/'+'testlabel.txt', "r")  # testlabel.txt includes the la
 data_all=data_r.readlines() #data_all contains all test images
 label_all=label_r.readlines() #label_all contains all labels
 length=len(nodes) #length contains the number of layers in DNN model
-#update_neuron(rp,rap) #updates the resistances in the neuron
+#update_neuron(rlow,rhigh) #updates the resistances in the neuron
 for i in range(len(nodes)-1):
     update_diff(gain[i],i+1) #updates the differential amplifier gains
 mapWB.mapWB(length,rlow,rhigh,nodes,data_dir,weight_var) #calling mapWB which sets the corresponding resistance value for weights and biases
