@@ -229,6 +229,7 @@ data_r.close()
 label_r.close()
 
 print("error rate = %f"%(sum(err)/float(testnum)))   #calculate error rate
+print("accuracy = %f%%"%(100-(sum(err)/float(testnum))*100))   #calculate accuracy
 print("average total power = %f"%(sum(float(x) for x in pwr_list)/float(testnum)))   #calculate average power consumption
 
 
