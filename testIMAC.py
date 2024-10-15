@@ -201,11 +201,11 @@ for i in range(batch):
         
     for j in range (testnum_per_batch):
         print(j+image_num+1)
-        print(label_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
+        print(f'Actual label: {label_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)]}')
         err.append(int(0))
         list_max=max(out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
-        print(out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
-        print(list_max)
+        print(f'Output voltages: {out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)]}')
+        #print(list_max)
         for k in range (nodes[len(nodes)-1]):
             if (out_list[nodes[len(nodes)-1]*j+k]==list_max):    # the neuron generating maximum output value represents the corrosponding class
                 out_list[nodes[len(nodes)-1]*j+k]=1.0
@@ -214,13 +214,17 @@ for i in range(batch):
             if (err[j+image_num]==0):
                 if (out_list[nodes[len(nodes)-1]*j+k] != label_list[nodes[len(nodes)-1]*j+k]):
                     err[j+image_num]=1
-        print(out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)])
+        print(f'Predicted label: {out_list[nodes[len(nodes)-1]*j:nodes[len(nodes)-1]*(j+1)]}')
+        if err[j+image_num]==1:
+            print("Wrong prediction!")
+        else:
+            print("Correct prediction")
         print("Power consumption = %f"%float(pwr_list[j+image_num]))
         print("sum error= %d"%(sum(err)))
     image_num = image_num + testnum_per_batch
     testimage = testimage + testnum_per_batch
 
-
+print("Task completed!")
 print("Total error= %d"%(sum(err)))
 err_w=open("error.txt", "w")
 err_w.write("Number of wrong recognitions in %d input image(s) = %d\n"% (image_num, sum(err)))
