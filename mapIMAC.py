@@ -60,6 +60,7 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
     for i in range(testnum):
         for j in range(nodes[len(nodes)-1]):
             f.write(".MEAS TRAN VOUT%d_%d FIND v(output%d) AT=%d*tsampling\n"%(j,i,j,i+1))
+    f.write(".end")
     f.close() 
 			
 			
