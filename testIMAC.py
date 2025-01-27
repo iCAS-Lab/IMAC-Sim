@@ -1,10 +1,5 @@
+#testIMAC is the parent file for the python framework, which initiates the simulation and analyzes the results from SPICE
 
-############################################################
-#                                                          #
-#          2023 Md Hasibul Amin. All rights reserved.      #
-#                      ma77@email.sc.edu                   #
-#                                                          #
-############################################################
 import re
 import os
 import time
