@@ -30,8 +30,7 @@ vdd=0.8 #The positive supply voltage
 vss=-0.8 #The negative supply voltage
 tsampling=1 #The sampling time in nanosecond
 nodes=[400,120,84,10] #Network Topology, an array which defines the DNN model size
-hpar=[13,4,3] #Array for the horizontal partitioning of all hidden layers
-vpar=[4,3,1] #Array for the vertical partitioning of all hidden layers
+xbar=[32,32] #The crossbar size
 gain=[30,30,10] #Array for the differential amplifier gains of all hidden layers
 tech_node=9e-9 #The technology node e.g. 9nm, 45nm etc.
 metal=3*tech_node #Width of the metal line for parasitic calculation
@@ -46,8 +45,15 @@ rlow=5e3 #Low resistance level of the memristive device
 rhigh=15e3 #High resistance level of the memristive device
 #list of inputs end
 
+hpar=[math.ceil(x/xbar[0]) for x in nodes] #Calculating the horizontal partitioning array for all hidden layers
+hpar.pop() #The last value in the array is removed for hpar
+vpar=[math.ceil(x/xbar[1]) for x in nodes] #Calculating the vertical partitioning array for all hidden layers
+vpar.pop(0) #The first value in the array is removed for vpar
+
 print('Rlow=%f'%rlow)
 print('Rhigh=%f'%rhigh)
+print('Horizontal partitions = '+str(hpar))
+print('Vertical partitions = '+str(vpar))
 
 #function to update the device resistances in the neuron.sp file, which includes the spice file for activation function
 def update_neuron (rlow,rhigh):
