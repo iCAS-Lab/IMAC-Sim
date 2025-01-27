@@ -13,8 +13,7 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - vss: The negative supply voltage
 - tsampling: The sampling time in nanosecond
 - nodes: Network Topology, an array which defines the DNN model size
-- hpar: Array for the horizontal partitioning of all hidden layers
-- vpar: Array for the vertical partitioning of all hidden layers
+- xbar: The m x n crossbar size represented as [m,n]
 - gain: Array for the differential amplifier gains of all hidden layers
 - tech_node: The technology node e.g. 9nm, 45nm etc.
 - metal: Width of the metal line for parasitic calculation
@@ -27,6 +26,8 @@ IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist
 - rho: Resistivity of metal
 - rlow: Low resistance level of the memristive device
 - rhigh: High resistance level of the memristive device
+- hpar: Array for the horizontal partitioning of all hidden layers, calculated automatically for a given crossbar size
+- vpar: Array for the vertical partitioning of all hidden layers, calculated automatically for a given crossbar size
 
 Follow this paper for more information. Md Hasibul Amin, Mohammed E. Elbtity, and Ramtin Zand. 2023. IMAC-Sim: A Circuit-level Simulator For In-Memory Analog Computing Architectures. In Proceedings of the Great Lakes Symposium on VLSI 2023 (GLSVLSI '23). Association for Computing Machinery, New York, NY, USA, 659–664. https://doi.org/10.1145/3583781.3590264
 
