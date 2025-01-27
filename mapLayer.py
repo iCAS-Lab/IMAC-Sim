@@ -1,10 +1,4 @@
-
-############################################################
-#                                                          #
-#          2023 Md Hasibul Amin. All rights reserved.      #
-#                      ma77@email.sc.edu                   #
-#                                                          #
-############################################################
+#mapLayer module writes the subcircuit netlist for each layers separately
 
 import random
 import numpy as np
