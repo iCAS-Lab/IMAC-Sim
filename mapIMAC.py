@@ -1,10 +1,4 @@
-
-############################################################
-#                                                          #
-#          2023 Md Hasibul Amin. All rights reserved.      #
-#                      ma77@email.sc.edu                   #
-#                                                          #
-############################################################
+#mapIMAC module connects the hidden layers and sets the configurations in the SPICE netlist
 
 import random
 import mapLayer
