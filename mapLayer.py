@@ -1,4 +1,4 @@
-#mapLayer module writes the subcircuit netlist for each layers separately
+#mapLayer module writes the subcircuit netlist for each of the layers separately
 
 import random
 import numpy as np
