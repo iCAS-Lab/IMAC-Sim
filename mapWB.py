@@ -1,10 +1,4 @@
-
-############################################################
-#                                                          #
-#          2023 Md Hasibul Amin. All rights reserved.      #
-#                      ma77@email.sc.edu                   #
-#                                                          #
-############################################################
+#mapWB module preprocesses the weights and biases
 
 import math
 import numpy as np
