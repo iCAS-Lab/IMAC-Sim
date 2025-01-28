@@ -40,7 +40,7 @@ rlow=5e3 #Low resistance level of the memristive device
 rhigh=15e3 #High resistance level of the memristive device
 #list of inputs end
 
-hpar=[math.ceil(x/xbar[0]) for x in nodes] #Calculating the horizontal partitioning array for all hidden layers
+hpar=[math.ceil((x+1)/xbar[0]) for x in nodes] #Calculating the horizontal partitioning array for all hidden layers
 hpar.pop() #The last value in the array is removed for hpar
 vpar=[math.ceil(x/xbar[1]) for x in nodes] #Calculating the vertical partitioning array for all hidden layers
 vpar.pop(0) #The first value in the array is removed for vpar
@@ -224,6 +224,13 @@ for i in range(batch):
         print("sum error= %d"%(sum(err)))
     image_num = image_num + testnum_per_batch
     testimage = testimage + testnum_per_batch
+
+#Area Calculation
+xbar_num = sum(np.multiply(hpar, vpar))
+xbar_area = W*L*xbar[0]*xbar[1]*xbar_num*1e12
+switch_area = 0.56*xbar_num*(xbar[0]+xbar[1])
+area = xbar_area + switch_area
+print("Total area = "+str(area)+" \u00b5m^2")
 
 print("Task completed!")
 print("Total error= %d"%(sum(err)))
