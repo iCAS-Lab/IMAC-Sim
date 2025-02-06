@@ -39,7 +39,7 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
     for line in range(nodes[0]):
         f.write("v%d in%d 0 PWL( 0n 0 "%(line,line))
         for image in range(testnum):
-            f.write("%fn %f %fn %f "%(image+0.1,input_num[line+image*nodes[0]],image+1,input_num[line+image*nodes[0]]))
+            f.write("%fn %f %fn %f "%(image*tsampling+0.1,input_num[line+image*nodes[0]],(image+1)*tsampling,input_num[line+image*nodes[0]]))
         f.write(")\n")
     c.close()
 
