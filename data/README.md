@@ -1,5 +1,5 @@
 # Data
-The _data_ directory should contain the test inputs, labels, weights and biases of the DNN model.
+The _data_ directory should contain the test inputs, labels, weights and biases of the MLP model.
 - test_data.csv: Input test data
 - test_labels.csv: The labels for the test data
 - Wi.csv: The weights for the ith layer.
