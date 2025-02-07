@@ -18,7 +18,7 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     layer_w=open(spice_dir+'/'+'layer'+str(LayerNUM)+".sp", "w") # open the layer subcircuit file for writing
     layer1_wb = layer1+1 # number of bitcell in a row including weights and bias
     
-    layer_w.write(".SUBCKT layer"+ str(LayerNUM)+" vdd vss 0 ")
+    layer_w.write(".SUBCKT layer"+ str(LayerNUM)+" vdd vss clk 0 ")
 
     for i in range(layer1):
         layer_w.write("in%d "%(i+1))
@@ -215,11 +215,25 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
             layer_w.write("Rconn%d_p%d nin%d_%d nin%d 1m\n"% (j+1,i+1,j+1,i+1,j+1))
     
     
-    
-    # writing the circuit for neurons
-    layer_w.write("\n\n**********neurons****************\n\n")	
+    # writing the circuit for ADC
+    layer_w.write("\n\n**********ADC****************\n\n")
     for i in range(layer2):
-        layer_w.write("Xsig%d nin%d out%d vdd 0 neuron\n"% (i+1,i+1,i+1))
+        layer_w.write("XADC%d oadc%d_0 oadc%d_1 oadc%d_2 nin%d negref ref clk vdd 0 ADC\n"% (i+1,i+1,i+1,i+1,i+1))
+    
+    # writing the circuit for relu neuron
+    layer_w.write("\n\n**********neurons****************\n\n")
+    for i in range(layer2):
+        layer_w.write("Xrel%d oadc%d_0 oadc%d_1 oadc%d_2 orel%d_0 orel%d_1 orel%d_2 vdd 0 drelu\n"% (i+1,i+1,i+1,i+1,i+1,i+1,i+1))
+
+    # writing the circuit for DAC
+    layer_w.write("\n\n**********DAC****************\n\n")
+    for i in range(layer2):
+        layer_w.write("XDAC%d orel%d_0 orel%d_1 orel%d_2 out%d vdd 0 DAC\n"% (i+1,i+1,i+1,i+1,i+1))
+
+    # writing the circuit for neurons
+    #layer_w.write("\n\n**********neurons****************\n\n")	
+    #for i in range(layer2):
+    #    layer_w.write("Xsig%d nin%d out%d vdd 0 neuron\n"% (i+1,i+1,i+1))
     
     
     layer_w.write(".ENDS layer"+ str(LayerNUM))

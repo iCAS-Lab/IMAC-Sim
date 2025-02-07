@@ -9,6 +9,10 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
     for x in range(len(nodes)-1):		
         f.write('.include diff'+str(x+1)+'.sp\n')
     f.write(".include 'neuron.sp'\n")
+    f.write(".include 'ADC.sp'\n")
+    f.write(".include 'DAC.sp'\n")
+    f.write(".include 'drelu.sp'\n")
+    f.write(".include '45nm_HP.pm'\n")
     f.write(".option post\n")
     f.write(".op\n")
     f.write(".PARAM VddVal=%f\n"%vdd)
@@ -18,7 +22,7 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
         f.write(".include 'layer"+ str(i+1)+".sp'\n")
     for i in range(len(nodes)-1):
         mapLayer.mapLayer(nodes[i],nodes[i+1],i+1,hpar[i],vpar[i],metal,T,H,L,W,D,eps,rho,weight_var,data_dir,spice_dir)
-        f.write("Xlayer"+ str(i+1)+" vdd vss 0 ")
+        f.write("Xlayer"+ str(i+1)+" vdd vss clk 0 ")
         for i2 in range(nodes[i]):
             if (i==0):
                 f.write("in%d "%i2)
@@ -46,6 +50,7 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
 	
     f.write("\n\n\nvss vss 0 DC VssVal\n")
     f.write("\n\n\nvdd vdd 0 DC VddVal\n")
+    f.write("\n\n\nVinclk clk 0 PULSE (1 0 0NS 5p 5p %fNS %fNS)\n"%(tsampling/2, tsampling))
     f.write(".TRAN 0.1n %d*tsampling\n"%(testnum))
 
     for i in range(testnum):
@@ -53,7 +58,7 @@ def mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum,da
 
     for i in range(testnum):
         for j in range(nodes[len(nodes)-1]):
-            f.write(".MEAS TRAN VOUT%d_%d FIND v(output%d) AT=%d*tsampling\n"%(j,i,j,i+1))
+            f.write(".MEAS TRAN VOUT%d_%d FIND v(output%d) AT=%d.5*tsampling\n"%(j,i,j,i))
     f.write(".end")
     f.close() 
 			
