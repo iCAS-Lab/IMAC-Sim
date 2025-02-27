@@ -27,6 +27,9 @@ tsampling=1 #The sampling time in nanosecond
 nodes=[400,120,84,10] #Network Topology, an array which defines the DNN model size
 xbar=[32,32] #The crossbar size
 gain=[30,30,10] #Array for the differential amplifier gains of all hidden layers
+vrange=1
+nbits=[8,8,8]
+nlevels=[2**x for x in nbits]
 tech_node=9e-9 #The technology node e.g. 9nm, 45nm etc.
 metal=3*tech_node #Width of the metal line for parasitic calculation
 T=22e-9 #Metal thickness
@@ -186,7 +189,7 @@ for i in range(batch):
     for j in range(int(testnum_per_batch*nodes[0])):	
         sim_w.write("%f "%(float(data_sim[j])*vdd))	
     sim_w.close()
-    mapIMAC.mapIMAC(nodes,length,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir,vdd,vss,tsampling)
+    mapIMAC.mapIMAC(nodes,length,hpar,vpar,nlevels,vrange,metal,T,H,L,W,D,eps,rho,weight_var,testnum_per_batch,data_dir,spice_dir,vdd,vss,tsampling)
     os.chdir(spice_dir)
     os.system('hspice classifier.sp > output.txt')
     os.chdir('..')
@@ -225,12 +228,26 @@ for i in range(batch):
     image_num = image_num + testnum_per_batch
     testimage = testimage + testnum_per_batch
 
+# Power Calculation
+padc = [0, 0, 0, 0.0007, 0, 0.00126, 0, 0.004]
+pdac = [0.0039, 0.0078, 0.0156, 0.0312, 0, 0.1248, 0, 0.4992]
+pdac = [x * 1e-3 for x in pdac]
+avg_pwr = sum(float(x) for x in pwr_list)/float(testnum)
+adc_pwr = padc[nbits[0]-1] * nodes[1]+ padc[nbits[1]-1] * nodes[2]+ padc[nbits[2]-1] * nodes[3]
+dac_pwr = pdac[nbits[0]-1] * nodes[1]+ pdac[nbits[1]-1] * nodes[2]+ pdac[nbits[2]-1] * nodes[3]
+tot_pwr = avg_pwr + adc_pwr + dac_pwr
+
 #Area Calculation
+aadc = [0, 0, 0, 500, 0, 1650, 0, 1650]
+adac = [0.166, 0.332, 0.664, 1.328, 0, 5.312, 0, 21.248]
 xbar_num = sum(np.multiply(hpar, vpar))
 xbar_area = W*L*xbar[0]*xbar[1]*xbar_num*1e12
 switch_area = 0.56*xbar_num*(xbar[0]+xbar[1])
-area = xbar_area + switch_area
+adc_area = aadc[nbits[0]-1] * nodes[1]+ aadc[nbits[1]-1] * nodes[2]+ aadc[nbits[2]-1] * nodes[3]
+dac_area = adac[nbits[0]-1] * nodes[1]+ adac[nbits[1]-1] * nodes[2]+ adac[nbits[2]-1] * nodes[3]
+area = xbar_area + switch_area + adc_area + dac_area
 print("Total area = "+str(area)+" \u00b5m^2")
+print("Total power = "+str(tot_pwr)+" W")
 
 print("Task completed!")
 print("Total error= %d"%(sum(err)))
@@ -242,7 +259,7 @@ label_r.close()
 
 print("error rate = %f"%(sum(err)/float(testnum)))   #calculate error rate
 print("accuracy = %f%%"%(100-(sum(err)/float(testnum))*100))   #calculate accuracy
-print("average total power = %f"%(sum(float(x) for x in pwr_list)/float(testnum)))   #calculate average power consumption
+#print("average total power = %f"%tot_pwr)   #calculate average power consumption
 
 
 

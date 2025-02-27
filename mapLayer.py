@@ -3,7 +3,7 @@
 import random
 import numpy as np
 
-def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_var,data_dir,spice_dir): 
+def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,nlevel,vrange,metal,T,H,L,W,D,eps,rho,weight_var,data_dir,spice_dir): 
 
     # updating the resistivity for specific technology node
     l0 = 39e-9 # Mean free path of electrons in Cu
@@ -219,7 +219,12 @@ def mapLayer(layer1,layer2, LayerNUM,hpar,vpar,metal,T,H,L,W,D,eps,rho,weight_va
     # writing the circuit for neurons
     layer_w.write("\n\n**********neurons****************\n\n")	
     for i in range(layer2):
-        layer_w.write("Xsig%d nin%d out%d vdd 0 neuron\n"% (i+1,i+1,i+1))
+        layer_w.write("Xsig%d nin%d nout%d vdd 0 neuron\n"% (i+1,i+1,i+1))
+        
+    # writing the circuit for quantization
+    layer_w.write("\n\n**********quantization****************\n\n")	
+    for i in range(layer2):
+        layer_w.write("E%d out%d 0 VOL='floor(V(nout%d)/%f*%d)/%d*%f'\n"% (i+1,i+1,i+1,vrange,nlevel,nlevel,vrange))
     
     
     layer_w.write(".ENDS layer"+ str(LayerNUM))
