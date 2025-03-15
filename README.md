@@ -1,4 +1,8 @@
 # IMAC-Sim
+
+> [!NOTE]  
+> This version supports the activation quantization. The activation quantization can be handled using the nbits variable which represents layerwise bit widths for the activations.
+
 IMAC-Sim is a Python-based simulation framework, which creates the SPICE netlist of the In-Memory Analog Computing (IMAC) circuit based on various device- and circuit-level hyperparameters selected by the user, and automatically evaluates the accuracy, power consumption and latency of the developed circuit using a user-specified dataset. The list of currently supported inputs are as follows.
 
 - data_dir: The directory where data files are located
