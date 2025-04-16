@@ -1,3 +1,6 @@
+> [!NOTE]  
+> The current version only supports ternary (-1, 0, 1) weights and biases. We are working on a script which will support automatic multi-bit quantization of weights.
+
 # Data
 The _data_ directory should contain the test inputs, labels, weights and biases of the DNN model.
 - test_data.csv: Input test data
